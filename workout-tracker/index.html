@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Workout Tracker</h1>
+            <nav class="view-tabs">
+                <button class="tab-btn active" data-view="day">Day</button>
+                <button class="tab-btn" data-view="week">Week</button>
+                <button class="tab-btn" data-view="month">Month</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Date Navigation -->
+            <div class="date-navigation">
+                <button id="prev-date" class="nav-btn">&larr;</button>
+                <span id="current-date-display"></span>
+                <button id="next-date" class="nav-btn">&rarr;</button>
+            </div>
+
+            <!-- Muscle Group Frequency Widget -->
+            <div class="muscle-frequency-widget">
+                <h3>Weekly Muscle Group Frequency</h3>
+                <div id="muscle-frequency-chart"></div>
+            </div>
+
+            <!-- Add Workout Button -->
+            <button id="add-workout-btn" class="primary-btn">+ Add Workout</button>
+
+            <!-- Workout List -->
+            <div id="workout-list" class="workout-list"></div>
+
+            <!-- Day View -->
+            <div id="day-view" class="view active"></div>
+
+            <!-- Week View -->
+            <div id="week-view" class="view"></div>
+
+            <!-- Month View -->
+            <div id="month-view" class="view"></div>
+        </main>
+
+        <!-- Add/Edit Workout Modal -->
+        <div id="workout-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title">Add Workout</h2>
+                    <button class="close-btn" id="close-modal">&times;</button>
+                </div>
+                <form id="workout-form">
+                    <input type="hidden" id="workout-id">
+
+                    <div class="form-group">
+                        <label for="workout-date">Date</label>
+                        <input type="date" id="workout-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workout-type">Workout Type</label>
+                        <select id="workout-type" required>
+                            <option value="">Select type...</option>
+                            <option value="strength">Strength Training</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="hiit">HIIT</option>
+                            <option value="flexibility">Flexibility/Yoga</option>
+                            <option value="sports">Sports</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="muscle-group">Muscle Group(s)</label>
+                        <div class="checkbox-group" id="muscle-groups">
+                            <label><input type="checkbox" value="chest"> Chest</label>
+                            <label><input type="checkbox" value="back"> Back</label>
+                            <label><input type="checkbox" value="shoulders"> Shoulders</label>
+                            <label><input type="checkbox" value="biceps"> Biceps</label>
+                            <label><input type="checkbox" value="triceps"> Triceps</label>
+                            <label><input type="checkbox" value="legs"> Legs</label>
+                            <label><input type="checkbox" value="core"> Core</label>
+                            <label><input type="checkbox" value="glutes"> Glutes</label>
+                            <label><input type="checkbox" value="calves"> Calves</label>
+                            <label><input type="checkbox" value="forearms"> Forearms</label>
+                            <label><input type="checkbox" value="full-body"> Full Body</label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sets">Sets</label>
+                            <input type="number" id="sets" min="0" placeholder="e.g., 4">
+                        </div>
+                        <div class="form-group">
+                            <label for="reps">Reps</label>
+                            <input type="text" id="reps" placeholder="e.g., 10 or 8-12">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="weight">Weight (lbs/kg)</label>
+                            <input type="text" id="weight" placeholder="e.g., 135 lbs">
+                        </div>
+                        <div class="form-group">
+                            <label for="volume">Volume (total reps × weight)</label>
+                            <input type="text" id="volume" placeholder="Auto-calculated or manual">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rest-time">Rest Time (seconds)</label>
+                            <input type="number" id="rest-time" min="0" placeholder="e.g., 60">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Duration (minutes)</label>
+                            <input type="number" id="duration" min="0" placeholder="e.g., 45">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="intensity">Intensity</label>
+                        <div class="intensity-selector">
+                            <input type="range" id="intensity" min="1" max="10" value="5">
+                            <span id="intensity-value">5</span>/10
+                        </div>
+                        <div class="intensity-labels">
+                            <span>Easy</span>
+                            <span>Moderate</span>
+                            <span>Hard</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exercises">Exercises (one per line)</label>
+                        <textarea id="exercises" rows="4" placeholder="e.g.,&#10;Bench Press - 4x8 @ 135lbs&#10;Incline Dumbbell Press - 3x10 @ 50lbs"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" rows="3" placeholder="How did the workout feel? Any PRs?"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="cancel-btn">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Workout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Workout Detail Modal -->
+        <div id="detail-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Workout Details</h2>
+                    <button class="close-btn" id="close-detail-modal">&times;</button>
+                </div>
+                <div id="workout-detail-content"></div>
+                <div class="form-actions">
+                    <button class="danger-btn" id="delete-workout-btn">Delete</button>
+                    <button class="primary-btn" id="edit-workout-btn">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
